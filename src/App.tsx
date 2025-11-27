@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import Landing from './pages/Landing'
 import Home from './pages/Home'
 import Gallery from './pages/Gallery'
 import Settings from './pages/Settings'
@@ -11,7 +12,8 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Landing />} />
+          <Route path="/generate" element={<Home />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>
