@@ -1,6 +1,8 @@
 import { create } from 'zustand'
 import { GenerationResult } from '@/lib/abv'
 import { StoryRegistrationResult } from '@/lib/story'
+import { walletService } from '@/lib/wallet'
+import { storageService } from '@/lib/storage'
 
 export interface IPAsset {
   id: string
@@ -29,6 +31,8 @@ interface AppState {
   isRegistering: boolean
   autoRegister: boolean
   walletAddress: string | null
+  walletBalance: string | null
+  isConnectingWallet: boolean
   theme: 'light' | 'dark'
   
   setCurrentGeneration: (result: GenerationResult | null) => void
@@ -38,6 +42,10 @@ interface AppState {
   setWalletAddress: (address: string | null) => void
   setTheme: (theme: 'light' | 'dark') => void
   toggleTheme: () => void
+  
+  connectWallet: () => Promise<void>
+  disconnectWallet: () => void
+  loadUserData: (address: string) => void
   
   addIPAsset: (
     generation: GenerationResult,
@@ -64,6 +72,8 @@ export const useStore = create<AppState>((set, get) => ({
   isRegistering: false,
   autoRegister: true,
   walletAddress: null,
+  walletBalance: null,
+  isConnectingWallet: false,
   theme: getInitialTheme(),
   
   setCurrentGeneration: (result) => set({ currentGeneration: result }),
@@ -83,26 +93,74 @@ export const useStore = create<AppState>((set, get) => ({
     set({ theme: newTheme })
   },
   
-  addIPAsset: (generation, registration, title, description) =>
-    set((state) => ({
-      ipAssets: [
-        {
-          id: registration.assetId,
-          title,
-          description,
-          type: generation.type,
-          content: generation.content,
-          imageUrl: generation.imageUrl,
-          videoUrl: generation.videoUrl,
-          storyAssetId: registration.assetId,
-          storyTxHash: registration.txHash,
-          storyIpId: registration.ipId,
-          metadata: generation.metadata,
-          registeredAt: new Date().toISOString(),
-        },
-        ...state.ipAssets,
-      ],
-    })),
+  // Wallet Connection
+  connectWallet: async () => {
+    set({ isConnectingWallet: true })
+    try {
+      const { address, balance } = await walletService.connect()
+      set({ walletAddress: address, walletBalance: balance })
+      
+      // Load user's IP assets from storage
+      const savedAssets = storageService.loadIPAssets(address)
+      set({ ipAssets: savedAssets })
+      
+      // Listen for account changes
+      walletService.onAccountsChanged((accounts) => {
+        if (accounts.length === 0) {
+          get().disconnectWallet()
+        } else {
+          const newAddress = accounts[0]
+          set({ walletAddress: newAddress })
+          get().loadUserData(newAddress)
+        }
+      })
+    } catch (error) {
+      console.error('Failed to connect wallet:', error)
+      throw error
+    } finally {
+      set({ isConnectingWallet: false })
+    }
+  },
+  
+  disconnectWallet: () => {
+    set({
+      walletAddress: null,
+      walletBalance: null,
+      ipAssets: [],
+    })
+    walletService.disconnect()
+  },
+  
+  loadUserData: (address: string) => {
+    const savedAssets = storageService.loadIPAssets(address)
+    set({ ipAssets: savedAssets })
+  },
+  
+  addIPAsset: (generation, registration, title, description) => {
+    const newAsset: IPAsset = {
+      id: registration.assetId,
+      title,
+      description,
+      type: generation.type,
+      content: generation.content,
+      imageUrl: generation.imageUrl,
+      videoUrl: generation.videoUrl,
+      storyAssetId: registration.assetId,
+      storyTxHash: registration.txHash,
+      storyIpId: registration.ipId,
+      metadata: generation.metadata,
+      registeredAt: new Date().toISOString(),
+    }
+    
+    const updatedAssets = [newAsset, ...get().ipAssets]
+    set({ ipAssets: updatedAssets })
+    
+    // Save to storage if wallet is connected
+    const walletAddress = get().walletAddress
+    if (walletAddress) {
+      storageService.saveIPAssets(walletAddress, updatedAssets)
+    }
+  },
   
   clearCurrentGeneration: () => set({ currentGeneration: null }),
 }))

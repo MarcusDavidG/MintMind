@@ -1,11 +1,20 @@
 import { Link } from 'react-router-dom'
 import { Button } from './ui/button'
-import { Sparkles, Moon, Sun } from 'lucide-react'
+import { Sparkles, Moon, Sun, Wallet, LogOut, Loader2 } from 'lucide-react'
 import { useStore } from '@/store/useStore'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
+import { walletService } from '@/lib/wallet'
 
 export default function Header() {
-  const { theme, toggleTheme } = useStore()
+  const { theme, toggleTheme, walletAddress, isConnectingWallet, connectWallet, disconnectWallet } = useStore()
+
+  const handleConnect = async () => {
+    try {
+      await connectWallet()
+    } catch (error) {
+      console.error('Wallet connection failed:', error)
+    }
+  }
 
   return (
     <header className="border-b bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50 transition-colors duration-300">
@@ -48,9 +57,61 @@ export default function Header() {
             </motion.div>
           </motion.button>
           
-          <Button variant="outline" size="sm" className="dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800">
-            Connect Wallet
-          </Button>
+          {/* Wallet Connect/Disconnect */}
+          <AnimatePresence mode="wait">
+            {!walletAddress ? (
+              <motion.div
+                key="connect"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+              >
+                <Button
+                  onClick={handleConnect}
+                  disabled={isConnectingWallet}
+                  variant="outline"
+                  size="sm"
+                  className="dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border-purple-200 dark:border-purple-700 hover:from-purple-100 hover:to-pink-100"
+                >
+                  {isConnectingWallet ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Connecting...
+                    </>
+                  ) : (
+                    <>
+                      <Wallet className="mr-2 h-4 w-4" />
+                      Connect Wallet
+                    </>
+                  )}
+                </Button>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="connected"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                className="flex items-center gap-2"
+              >
+                <div className="px-3 py-1.5 bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 border border-green-200 dark:border-green-700 rounded-lg">
+                  <span className="text-sm font-medium text-green-700 dark:text-green-300 flex items-center gap-2">
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                    {walletService.formatAddress(walletAddress)}
+                  </span>
+                </div>
+                <Button
+                  onClick={disconnectWallet}
+                  variant="ghost"
+                  size="sm"
+                  className="dark:hover:bg-slate-800"
+                  title="Disconnect Wallet"
+                >
+                  <LogOut className="h-4 w-4" />
+                </Button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </nav>
       </div>
     </header>
