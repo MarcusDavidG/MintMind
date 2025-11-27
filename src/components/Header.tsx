@@ -1,19 +1,31 @@
 import { Link } from 'react-router-dom'
 import { Button } from './ui/button'
-import { Sparkles, Moon, Sun, Wallet, LogOut, Loader2 } from 'lucide-react'
+import { Sparkles, Moon, Sun, Wallet, LogOut } from 'lucide-react'
 import { useStore } from '@/store/useStore'
 import { motion, AnimatePresence } from 'framer-motion'
 import { walletService } from '@/lib/wallet'
+import { useState } from 'react'
+import WalletModal from './WalletModal'
 
 export default function Header() {
   const { theme, toggleTheme, walletAddress, isConnectingWallet, connectWallet, disconnectWallet } = useStore()
+  const [showWalletModal, setShowWalletModal] = useState(false)
+  const [connectionError, setConnectionError] = useState<string | null>(null)
 
   const handleConnect = async () => {
+    setConnectionError(null)
     try {
       await connectWallet()
-    } catch (error) {
+      setShowWalletModal(false)
+    } catch (error: any) {
       console.error('Wallet connection failed:', error)
+      setConnectionError(error.message || 'Failed to connect wallet')
     }
+  }
+
+  const handleOpenModal = () => {
+    setConnectionError(null)
+    setShowWalletModal(true)
   }
 
   return (
@@ -67,23 +79,14 @@ export default function Header() {
                 exit={{ opacity: 0, scale: 0.9 }}
               >
                 <Button
-                  onClick={handleConnect}
+                  onClick={handleOpenModal}
                   disabled={isConnectingWallet}
                   variant="outline"
                   size="sm"
                   className="dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border-purple-200 dark:border-purple-700 hover:from-purple-100 hover:to-pink-100"
                 >
-                  {isConnectingWallet ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Connecting...
-                    </>
-                  ) : (
-                    <>
-                      <Wallet className="mr-2 h-4 w-4" />
-                      Connect Wallet
-                    </>
-                  )}
+                  <Wallet className="mr-2 h-4 w-4" />
+                  Connect Wallet
                 </Button>
               </motion.div>
             ) : (
@@ -114,6 +117,15 @@ export default function Header() {
           </AnimatePresence>
         </nav>
       </div>
+
+      {/* Wallet Modal */}
+      <WalletModal
+        isOpen={showWalletModal}
+        onClose={() => setShowWalletModal(false)}
+        onConnect={handleConnect}
+        error={connectionError}
+        isConnecting={isConnectingWallet}
+      />
     </header>
   )
 }
