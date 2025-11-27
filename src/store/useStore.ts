@@ -29,12 +29,15 @@ interface AppState {
   isRegistering: boolean
   autoRegister: boolean
   walletAddress: string | null
+  theme: 'light' | 'dark'
   
   setCurrentGeneration: (result: GenerationResult | null) => void
   setIsGenerating: (isGenerating: boolean) => void
   setIsRegistering: (isRegistering: boolean) => void
   setAutoRegister: (autoRegister: boolean) => void
   setWalletAddress: (address: string | null) => void
+  setTheme: (theme: 'light' | 'dark') => void
+  toggleTheme: () => void
   
   addIPAsset: (
     generation: GenerationResult,
@@ -45,19 +48,40 @@ interface AppState {
   clearCurrentGeneration: () => void
 }
 
-export const useStore = create<AppState>((set) => ({
+const getInitialTheme = (): 'light' | 'dark' => {
+  if (typeof window !== 'undefined') {
+    const stored = localStorage.getItem('theme') as 'light' | 'dark' | null
+    if (stored) return stored
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  }
+  return 'light'
+}
+
+export const useStore = create<AppState>((set, get) => ({
   ipAssets: [],
   currentGeneration: null,
   isGenerating: false,
   isRegistering: false,
   autoRegister: true,
   walletAddress: null,
+  theme: getInitialTheme(),
   
   setCurrentGeneration: (result) => set({ currentGeneration: result }),
   setIsGenerating: (isGenerating) => set({ isGenerating }),
   setIsRegistering: (isRegistering) => set({ isRegistering }),
   setAutoRegister: (autoRegister) => set({ autoRegister }),
   setWalletAddress: (address) => set({ walletAddress: address }),
+  setTheme: (theme) => {
+    localStorage.setItem('theme', theme)
+    document.documentElement.classList.toggle('dark', theme === 'dark')
+    set({ theme })
+  },
+  toggleTheme: () => {
+    const newTheme = get().theme === 'light' ? 'dark' : 'light'
+    localStorage.setItem('theme', newTheme)
+    document.documentElement.classList.toggle('dark', newTheme === 'dark')
+    set({ theme: newTheme })
+  },
   
   addIPAsset: (generation, registration, title, description) =>
     set((state) => ({
