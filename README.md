@@ -57,6 +57,8 @@ AI-powered creation studio for generating text, images, and video using ABV.dev 
    VITE_ABV_API_KEY=your_abv_api_key
    VITE_STORY_API_KEY=your_story_api_key
    ```
+   
+   **Note**: The live deployment currently runs in mock mode, so you can test all features without API keys!
 
 4. **Run development server**
    ```bash
@@ -211,7 +213,9 @@ npm run type-check
 
 ## 🎬 Demo
 
-[Coming Soon - 2-minute demo video]
+**Live Demo**: [https://mintmind-58qtdrjql-abokisubme.vercel.app](https://mintmind-58qtdrjql-abokisubme.vercel.app)
+
+Demo video: [Coming Soon]
 
 ## 🏆 Hackathon Submission
 
