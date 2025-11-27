@@ -96,7 +96,7 @@ export default function Settings() {
     {
       title: 'API Configuration',
       icon: Key,
-      gradient: 'from-blue-500 to-cyan-500',
+      gradient: 'from-purple-500 to-pink-500',
       settings: [
         {
           label: 'ABV.dev API Key',
@@ -129,7 +129,7 @@ export default function Settings() {
     {
       title: 'Generation Preferences',
       icon: Zap,
-      gradient: 'from-orange-500 to-red-500',
+      gradient: 'from-purple-500 to-pink-500',
       settings: [
         {
           label: 'Auto-register IP',
@@ -260,7 +260,7 @@ export default function Settings() {
             {/* About Section */}
             <motion.div variants={itemVariants}>
               <Card className="border-2 border-slate-200 dark:border-slate-700 shadow-xl">
-                <div className="bg-gradient-to-r from-green-500 to-emerald-500 p-6">
+                <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-6">
                   <div className="flex items-center gap-3 text-white">
                     <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
                       <Info className="w-6 h-6" />

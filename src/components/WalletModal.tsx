@@ -56,13 +56,14 @@ export default function WalletModal({ isOpen, onClose, onConnect, error, isConne
           />
 
           {/* Modal */}
-          <div className="fixed inset-0 flex items-center justify-center z-50 p-4 pointer-events-none">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="w-full max-w-md pointer-events-auto"
-            >
+          <div className="fixed inset-0 flex items-center justify-center z-50 p-4 pointer-events-none overflow-y-auto">
+            <div className="min-h-screen w-full flex items-center justify-center py-8 md:py-4">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                className="w-full max-w-md pointer-events-auto my-auto"
+              >
               <Card className="border-2 border-slate-200 dark:border-slate-700 shadow-2xl">
                 <CardHeader className="relative bg-gradient-to-r from-purple-500 to-pink-500 text-white">
                   <div className="flex items-center justify-between">
@@ -224,7 +225,8 @@ export default function WalletModal({ isOpen, onClose, onConnect, error, isConne
                   </div>
                 </CardContent>
               </Card>
-            </motion.div>
+              </motion.div>
+            </div>
           </div>
         </>
       )}
