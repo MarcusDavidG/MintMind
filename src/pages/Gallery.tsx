@@ -1,27 +1,11 @@
 import Layout from '@/components/Layout'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Image as ImageIcon, Type, Video, ExternalLink } from 'lucide-react'
-
-const mockAssets = [
-  {
-    id: '1',
-    title: 'Sci-Fi Story',
-    type: 'text',
-    storyAssetId: 'story-asset-123',
-    registeredAt: '2025-11-27T10:00:00Z',
-    content: 'A brief sci-fi story about...',
-  },
-  {
-    id: '2',
-    title: 'Digital Artwork',
-    type: 'image',
-    storyAssetId: 'story-asset-456',
-    registeredAt: '2025-11-26T14:30:00Z',
-    content: 'https://placeholder.com/image.jpg',
-  },
-]
+import { useStore } from '@/store/useStore'
+import { Link } from 'react-router-dom'
 
 export default function Gallery() {
+  const { ipAssets } = useStore()
   const getIcon = (type: string) => {
     switch (type) {
       case 'text':
@@ -46,7 +30,7 @@ export default function Gallery() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {mockAssets.map((asset) => (
+          {ipAssets.map((asset) => (
             <Card key={asset.id}>
               <CardHeader>
                 <div className="flex items-center justify-between">
@@ -62,12 +46,20 @@ export default function Gallery() {
               <CardContent>
                 <div className="space-y-3">
                   <div className="bg-muted p-3 rounded-md text-sm">
-                    {asset.type === 'image' ? (
-                      <div className="aspect-video bg-gray-200 rounded flex items-center justify-center">
-                        <ImageIcon className="h-8 w-8 text-gray-400" />
-                      </div>
+                    {asset.type === 'image' && asset.imageUrl ? (
+                      <img
+                        src={asset.imageUrl}
+                        alt={asset.title}
+                        className="w-full rounded-md"
+                      />
+                    ) : asset.type === 'video' && asset.videoUrl ? (
+                      <video
+                        src={asset.videoUrl}
+                        controls
+                        className="w-full rounded-md"
+                      />
                     ) : (
-                      <p className="line-clamp-3">{asset.content}</p>
+                      <p className="line-clamp-3 whitespace-pre-wrap">{asset.content}</p>
                     )}
                   </div>
                   <div className="text-xs space-y-1">
@@ -88,13 +80,13 @@ export default function Gallery() {
           ))}
         </div>
 
-        {mockAssets.length === 0 && (
+        {ipAssets.length === 0 && (
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-12">
               <p className="text-muted-foreground mb-4">No IP assets registered yet</p>
-              <a href="/" className="text-primary hover:underline">
+              <Link to="/" className="text-primary hover:underline">
                 Create your first asset
-              </a>
+              </Link>
             </CardContent>
           </Card>
         )}
