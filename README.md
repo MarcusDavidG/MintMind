@@ -5,9 +5,8 @@ AI-powered creation studio for generating text, images, and video using ABV.dev 
 - AI generation (text / image / video)
 - One-click on-chain IP registration
 - IP gallery + metadata viewer
-- shadcn/ui + Tailwind frontend
-- Optional Coinbase Embedded Wallet onboarding
-- Optional Yakoa originality check
+- Coinbase Embedded Wallet onboarding
+- Yakoa originality check
 
 ##  Tech Stack
 React • Vite • TypeScript • TailwindCSS • shadcn/ui • Story Protocol • ABV.dev
