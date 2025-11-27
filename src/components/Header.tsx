@@ -29,7 +29,7 @@ export default function Header() {
   }
 
   return (
-    <header className="border-b bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50 transition-colors duration-300">
+    <header className="border-b bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-40 transition-colors duration-300">
       <div className="container mx-auto px-4 py-3 md:py-4 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 text-lg md:text-xl font-bold text-primary dark:text-purple-400">
           <div className="p-1.5 md:p-2 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg">
