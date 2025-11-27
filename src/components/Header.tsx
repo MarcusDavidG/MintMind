@@ -30,22 +30,22 @@ export default function Header() {
 
   return (
     <header className="border-b bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50 transition-colors duration-300">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 text-xl font-bold text-primary dark:text-purple-400">
-          <div className="p-2 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg">
-            <Sparkles className="h-5 w-5 text-white" />
+      <div className="container mx-auto px-4 py-3 md:py-4 flex items-center justify-between">
+        <Link to="/" className="flex items-center gap-2 text-lg md:text-xl font-bold text-primary dark:text-purple-400">
+          <div className="p-1.5 md:p-2 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg">
+            <Sparkles className="h-4 w-4 md:h-5 md:w-5 text-white" />
           </div>
           MintMind
         </Link>
         
-        <nav className="flex items-center gap-6">
-          <Link to="/generate" className="text-sm font-medium hover:text-primary dark:hover:text-purple-400 transition-colors dark:text-slate-300">
+        <nav className="flex items-center gap-3 md:gap-6">
+          <Link to="/generate" className="text-xs md:text-sm font-medium hover:text-primary dark:hover:text-purple-400 transition-colors dark:text-slate-300 hidden sm:block">
             Generate
           </Link>
-          <Link to="/gallery" className="text-sm font-medium hover:text-primary dark:hover:text-purple-400 transition-colors dark:text-slate-300">
+          <Link to="/gallery" className="text-xs md:text-sm font-medium hover:text-primary dark:hover:text-purple-400 transition-colors dark:text-slate-300 hidden sm:block">
             Gallery
           </Link>
-          <Link to="/settings" className="text-sm font-medium hover:text-primary dark:hover:text-purple-400 transition-colors dark:text-slate-300">
+          <Link to="/settings" className="text-xs md:text-sm font-medium hover:text-primary dark:hover:text-purple-400 transition-colors dark:text-slate-300 hidden sm:block">
             Settings
           </Link>
           
@@ -62,9 +62,9 @@ export default function Header() {
               transition={{ duration: 0.3 }}
             >
               {theme === 'dark' ? (
-                <Moon className="h-5 w-5 text-slate-700 dark:text-yellow-400" />
+                <Moon className="h-4 w-4 md:h-5 md:w-5 text-slate-700 dark:text-yellow-400" />
               ) : (
-                <Sun className="h-5 w-5 text-orange-500" />
+                <Sun className="h-4 w-4 md:h-5 md:w-5 text-orange-500" />
               )}
             </motion.div>
           </motion.button>
@@ -83,10 +83,10 @@ export default function Header() {
                   disabled={isConnectingWallet}
                   variant="outline"
                   size="sm"
-                  className="dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border-purple-200 dark:border-purple-700 hover:from-purple-100 hover:to-pink-100"
+                  className="dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border-purple-200 dark:border-purple-700 hover:from-purple-100 hover:to-pink-100 text-xs md:text-sm"
                 >
-                  <Wallet className="mr-2 h-4 w-4" />
-                  Connect Wallet
+                  <Wallet className="mr-0 sm:mr-2 h-4 w-4" />
+                  <span className="hidden sm:inline">Connect</span>
                 </Button>
               </motion.div>
             ) : (
@@ -97,9 +97,9 @@ export default function Header() {
                 exit={{ opacity: 0, scale: 0.9 }}
                 className="flex items-center gap-2"
               >
-                <div className="px-3 py-1.5 bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 border border-green-200 dark:border-green-700 rounded-lg">
-                  <span className="text-sm font-medium text-green-700 dark:text-green-300 flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                <div className="px-2 md:px-3 py-1 md:py-1.5 bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 border border-green-200 dark:border-green-700 rounded-lg">
+                  <span className="text-xs md:text-sm font-medium text-green-700 dark:text-green-300 flex items-center gap-1 md:gap-2">
+                    <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-green-500 rounded-full animate-pulse" />
                     {walletService.formatAddress(walletAddress)}
                   </span>
                 </div>
@@ -107,10 +107,10 @@ export default function Header() {
                   onClick={disconnectWallet}
                   variant="ghost"
                   size="sm"
-                  className="dark:hover:bg-slate-800"
+                  className="dark:hover:bg-slate-800 p-2"
                   title="Disconnect Wallet"
                 >
-                  <LogOut className="h-4 w-4" />
+                  <LogOut className="h-3 w-3 md:h-4 md:w-4" />
                 </Button>
               </motion.div>
             )}

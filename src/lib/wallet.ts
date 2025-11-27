@@ -1,4 +1,5 @@
 import { ethers } from 'ethers'
+import { isMobile, isInWalletBrowser, openMobileWallet } from './mobile'
 
 declare global {
   interface Window {
@@ -19,7 +20,23 @@ export class WalletService {
     return typeof window !== 'undefined' && !!window.ethereum
   }
 
+  isMobileDevice(): boolean {
+    return isMobile()
+  }
+
+  isInMobileWalletBrowser(): boolean {
+    return isInWalletBrowser()
+  }
+
   async connect(): Promise<{ address: string; balance: string }> {
+    // On mobile without wallet, open MetaMask deep link
+    if (isMobile() && !this.isWalletAvailable() && !isInWalletBrowser()) {
+      openMobileWallet('metamask')
+      throw new Error(
+        'Opening MetaMask app... If the app doesn\'t open, please make sure MetaMask is installed.'
+      )
+    }
+
     if (!this.isWalletAvailable()) {
       throw new Error(
         'No Web3 wallet detected. Please install MetaMask, Coinbase Wallet, or another Web3 wallet extension.'
