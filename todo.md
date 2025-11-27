@@ -82,8 +82,8 @@ Build a web app where users generate text/images/video via ABV.dev and automatic
   - [x] Deploy to production ✅
   - [x] **Commits**: `e62570f docs: comprehensive README` + `c2cf629 chore: update gitignore`
   
-**Live Demo**: https://mintmind-58qtdrjql-abokisubme.vercel.app  
-**Note**: Deployment has Vercel SSO protection (common for new deployments)
+**Live Demo**: https://mintmind-three.vercel.app  
+**Note**: Clean Vercel production URL - ready for public access!
 
 ---
 

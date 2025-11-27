@@ -213,7 +213,7 @@ npm run type-check
 
 ## 🎬 Demo
 
-**Live Demo**: [https://mintmind-58qtdrjql-abokisubme.vercel.app](https://mintmind-58qtdrjql-abokisubme.vercel.app)
+**Live Demo**: [https://mintmind-three.vercel.app](https://mintmind-three.vercel.app)
 
 Demo video: [Coming Soon]
 
