@@ -1,8 +1,8 @@
-# MintMind 🎨
+# MintMind
 
 AI-powered creation studio for generating text, images, and video using ABV.dev — automatically registered as IP on Story Protocol.
 
-## ✨ Features
+## Features
 
 - **AI Generation**: Create text, images, and videos using ABV.dev API
 - **Automatic IP Registration**: One-click registration on Story Protocol
@@ -10,7 +10,7 @@ AI-powered creation studio for generating text, images, and video using ABV.dev 
 - **Auto-Register Toggle**: Enable/disable automatic Story Protocol registration
 - **Mock Mode**: Full-featured development mode without API keys
 
-## 🏗️ Tech Stack
+## Tech Stack
 
 - **Frontend**: React + Vite + TypeScript
 - **UI**: shadcn/ui + TailwindCSS
@@ -19,7 +19,7 @@ AI-powered creation studio for generating text, images, and video using ABV.dev 
 - **Testing**: Vitest + React Testing Library
 - **Deployment**: Vercel
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -67,7 +67,7 @@ AI-powered creation studio for generating text, images, and video using ABV.dev 
    
    Open [http://localhost:5173](http://localhost:5173)
 
-## 🧪 Testing
+## Testing
 
 Run the test suite:
 ```bash
@@ -80,11 +80,11 @@ npm test -- --watch
 ```
 
 All tests (10 total):
-- ✅ 4 store tests (state management)
-- ✅ 3 Gallery page tests
-- ✅ 3 Home page tests (generation & registration flows)
+- 4 store tests (state management)
+- 3 Gallery page tests
+- 3 Home page tests (generation & registration flows)
 
-## 🏗️ Build
+## Build
 
 Build for production:
 ```bash
@@ -96,7 +96,7 @@ Preview production build:
 npm run preview
 ```
 
-## 📦 Deployment
+## Deployment
 
 ### Deploy to Vercel
 
@@ -126,7 +126,7 @@ npm run preview
 3. Configure environment variables
 4. Deploy
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 MintMind/
@@ -162,7 +162,7 @@ MintMind/
 └── package.json
 ```
 
-## 🎯 Usage
+## Usage
 
 ### Generating Content
 
@@ -178,7 +178,7 @@ MintMind/
 2. Browse your registered IP assets
 3. Click "View on Story" to see asset on Story Protocol
 
-## 🔧 Development
+## Development
 
 ### Mock Mode
 
@@ -200,7 +200,7 @@ npm run lint
 npm run type-check
 ```
 
-## 📋 Environment Variables
+## Environment Variables
 
 | Variable | Required | Description |
 |----------|----------|-------------|
@@ -211,26 +211,26 @@ npm run type-check
 | `VITE_YAKOA_API_KEY` | Optional | Yakoa API key |
 | `VITE_APP_URL` | Optional | Deployment URL |
 
-## 🎬 Demo
+## Demo
 
 **Live Demo**: [https://mintmind-three.vercel.app](https://mintmind-three.vercel.app)
 
 Demo video: [Coming Soon]
 
-## 🏆 Hackathon Submission
+## Hackathon Submission
 
 This project demonstrates:
-- ✅ ABV.dev integration for AI generation
-- ✅ Story Protocol IP registration
-- ✅ Clean, responsive UI with shadcn/ui
-- ✅ Comprehensive test coverage
-- ✅ Production-ready deployment
+- ABV.dev integration for AI generation
+- Story Protocol IP registration
+- Clean, responsive UI with shadcn/ui
+- Comprehensive test coverage
+- Production-ready deployment
 
-## 🤝 Contributing
+## Contributing
 
 Contributions welcome! Please open an issue or PR.
 
-## 📄 License
+## License
 
 MIT
 
