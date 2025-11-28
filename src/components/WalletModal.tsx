@@ -4,6 +4,8 @@ import { Button } from './ui/button'
 import { X, Wallet, ExternalLink, AlertCircle, Smartphone } from 'lucide-react'
 import { walletService } from '@/lib/wallet'
 import { isMobile, isInWalletBrowser, getWalletInstallUrl, openMobileWallet } from '@/lib/mobile'
+import { useEffect } from 'react'
+import { createPortal } from 'react-dom'
 
 interface WalletModalProps {
   isOpen: boolean
@@ -14,6 +16,26 @@ interface WalletModalProps {
 }
 
 export default function WalletModal({ isOpen, onClose, onConnect, error, isConnecting }: WalletModalProps) {
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      // Save current scroll position
+      const scrollY = window.scrollY
+      document.body.style.position = 'fixed'
+      document.body.style.top = `-${scrollY}px`
+      document.body.style.width = '100%'
+      document.body.style.overflow = 'hidden'
+      
+      return () => {
+        // Restore scroll position
+        document.body.style.position = ''
+        document.body.style.top = ''
+        document.body.style.width = ''
+        document.body.style.overflow = ''
+        window.scrollTo(0, scrollY)
+      }
+    }
+  }, [isOpen])
   const mobile = isMobile()
   const inWalletBrowser = isInWalletBrowser()
   const isWalletAvailable = walletService.isWalletAvailable()
@@ -42,29 +64,28 @@ export default function WalletModal({ isOpen, onClose, onConnect, error, isConne
     },
   ]
 
-  return (
+  const modalContent = (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center">
-          {/* Backdrop */}
+        <div 
+          className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+          style={{ 
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 99999
+          }}
+          onClick={onClose}
+        >
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-          />
-
-          {/* Modal Container with Scroll */}
-          <div className="relative z-10 w-full h-full overflow-y-auto flex items-center justify-center p-4">
-            <div className="w-full flex items-center justify-center min-h-full py-8">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                className="w-full max-w-md"
-                onClick={(e) => e.stopPropagation()}
-              >
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            className="w-full max-w-md max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
               <Card className="border-2 border-slate-200 dark:border-slate-700 shadow-2xl">
                 <CardHeader className="relative bg-gradient-to-r from-purple-500 to-pink-500 text-white">
                   <div className="flex items-center justify-between">
@@ -226,11 +247,19 @@ export default function WalletModal({ isOpen, onClose, onConnect, error, isConne
                   </div>
                 </CardContent>
               </Card>
-              </motion.div>
-            </div>
-          </div>
+          </motion.div>
         </div>
       )}
     </AnimatePresence>
   )
+
+  // Render modal in portal
+  if (typeof document !== 'undefined') {
+    const modalRoot = document.getElementById('modal-root')
+    if (modalRoot) {
+      return createPortal(modalContent, modalRoot)
+    }
+  }
+  
+  return modalContent
 }
